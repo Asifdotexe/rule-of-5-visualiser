@@ -6,8 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from src.settings import (DISTRIBUTIONS, POPULATION_SIZE, SAMPLE_SIZE,
-                          DistributionType)
+from src.settings import DISTRIBUTIONS, POPULATION_SIZE, SAMPLE_SIZE, DistributionType
 
 
 @dataclass
@@ -39,15 +38,17 @@ def generate_population_data(
 def simulate_rule_of_five(
     distribution_type: DistributionType,
     num_of_simulations: int,
-):
+) -> SimulationResults:
     """
     Simulate population data based on the given distribution type.
 
     :param distribution_type: The type of distribution to use.
     :param num_of_simulations: The number of simulations to run.
-    :param current_history: The current history of data points.
-    :return: Updated plot, stats string, and history table.
+    :return: Simulation results.
     """
+    if num_of_simulations < 1:
+        raise ValueError("num_of_simulations must be greater than 0")
+
     population_data_arr: np.ndarray = generate_population_data(distribution_type)
     population_median: np.float64 = np.median(population_data_arr)
     sample_data_arr: np.ndarray = np.random.choice(
