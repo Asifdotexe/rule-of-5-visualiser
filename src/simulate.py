@@ -13,6 +13,7 @@ from src.settings import DISTRIBUTIONS, POPULATION_SIZE, SAMPLE_SIZE, Distributi
 class SimulationResults:
     """Data container for simulation results."""
 
+    population_data_arr: np.ndarray
     population_median: np.float64
     sample_data_arr: np.ndarray
     sample_mins: np.ndarray
@@ -66,7 +67,9 @@ def simulate_rule_of_five(
     rule_of_five_success_rate: np.float64 = (
         num_of_simulations_within_range / num_of_simulations
     ) * 100
+
     return SimulationResults(
+        population_data_arr=population_data_arr,
         population_median=population_median,
         sample_data_arr=sample_data_arr,
         sample_mins=sample_mins,
