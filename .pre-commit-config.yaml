@@ -27,3 +27,10 @@ repos:
         language: system
         types: [python]
         args: ["--rcfile=pyproject.toml"]
+
+      - id: pytest
+        name: pytest
+        entry: python -m pytest tests/
+        language: system
+        types: [python]
+        pass_filenames: false

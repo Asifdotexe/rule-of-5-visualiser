@@ -3,11 +3,11 @@ Module responsible for simulation
 """
 
 from dataclasses import dataclass
-from enum import Enum
 
 import numpy as np
 
-POPULATION_SIZE: int = 10_000
+from src.settings import (DISTRIBUTIONS, POPULATION_SIZE, SAMPLE_SIZE,
+                          DistributionType)
 
 
 @dataclass
@@ -23,25 +23,6 @@ class SimulationResults:
     rule_of_five_success_rate: np.float64
 
 
-class DistributionType(Enum):
-    """Supported distribution types for population data generation."""
-
-    NORMAL = "normal"
-    UNIFORM = "uniform"
-    EXPONENTIAL = "exponential"
-
-
-DISTRIBUTIONS = {
-    DistributionType.NORMAL: lambda size: np.random.normal(loc=50, scale=15, size=size),
-    DistributionType.UNIFORM: lambda size: np.random.uniform(
-        low=0, high=100, size=size
-    ),
-    DistributionType.EXPONENTIAL: lambda size: np.random.exponential(
-        scale=20, size=size
-    ),
-}
-
-
 def generate_population_data(
     distribution_type: DistributionType, size: int = POPULATION_SIZE
 ) -> np.ndarray:
@@ -55,7 +36,7 @@ def generate_population_data(
     return DISTRIBUTIONS[distribution_type](size)
 
 
-def simulate(
+def simulate_rule_of_five(
     distribution_type: DistributionType,
     num_of_simulations: int,
 ):
@@ -67,22 +48,15 @@ def simulate(
     :param current_history: The current history of data points.
     :return: Updated plot, stats string, and history table.
     """
-    # Keep population size constant rather than scaling it with num_of_simulations.
-    # This is because the population represents the underlying truth we are trying to estimate.
-    # Regardless of how many simulations we run, the Truth should be based on a large, stable population.
-    # to ensure the true median is statistically significant
     population_data_arr: np.ndarray = generate_population_data(distribution_type)
     population_median: np.float64 = np.median(population_data_arr)
-    # generate all samples at once in (N, 5) matrix
     sample_data_arr: np.ndarray = np.random.choice(
-        population_data_arr, size=(num_of_simulations, 5)
+        population_data_arr, size=(num_of_simulations, SAMPLE_SIZE)
     )
 
     sample_mins: np.ndarray = np.min(sample_data_arr, axis=1)
     sample_maxs: np.ndarray = np.max(sample_data_arr, axis=1)
 
-    # check if the population median likes within the range of the sample
-    # the result is a boolean array of shape (num_simulations,)
     is_median_within_range_arr: np.ndarray = np.logical_and(
         sample_mins <= population_median, sample_maxs >= population_median
     )
@@ -100,11 +74,3 @@ def simulate(
         num_of_simulations_within_range=num_of_simulations_within_range,
         rule_of_five_success_rate=rule_of_five_success_rate,
     )
-
-
-def main():
-    print(generate_population_data(DistributionType.NORMAL, 10_000))
-
-
-if __name__ == "__main__":
-    main()
