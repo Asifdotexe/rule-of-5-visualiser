@@ -53,7 +53,7 @@ class DistributionType(Enum):
 
 
 #: Distribution parameters for generating synthetic population data.
-#: Each distribution is tuned to have a similar median (~50) for fair comparison.
+#: #: Normal and Uniform are centered around ~50; Exponential keeps its natural skewed median.
 #: - Normal: loc=50, scale=15 -> median ≈ 50
 #: - Uniform: low=0, high=100 -> median = 50
 #: - Exponential: scale=20 -> median ≈ 13.86 (natural median, not forced to 50)
