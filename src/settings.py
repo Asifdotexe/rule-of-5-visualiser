@@ -88,3 +88,20 @@ FIGURE_DPI: int = 150
 #: 12x8 provides ample space for data visualization while fitting on standard screens.
 #: Used in: src/visualise.py
 DEFAULT_FIGURE_SIZE: tuple[float, float] = (12, 8)
+
+#: Number of histogram bins for population distribution plot.
+#: 60 bins provides a smooth distribution visualization.
+#: Used in: src/visualise.py::plot_simulation()
+HISTOGRAM_BINS: int = 60
+
+#: Colors used in visualization (hex codes).
+#: Used in: src/visualise.py::plot_simulation()
+POPULATION_COLOR: str = "#607d8b"
+MEDIAN_COLOR: str = "#d32f2f"
+SUCCESS_COLOR: str = "#2e7d32"
+FAILURE_COLOR: str = "#c62828"
+
+#: Maximum number of sample trials to visualize.
+#: Showing 12 trials provides a good overview without overcrowding the plot.
+#: Used in: src/visualise.py::plot_simulation()
+MAX_VISUALIZATIONS: int = 12
